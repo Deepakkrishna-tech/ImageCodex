@@ -1,100 +1,69 @@
-# 🧩 VisionPrompt Agent
+# 🎨 VisionFlow: Your AI Creative Partner
 
-  <!-- Optional: Create a short GIF of your app and upload it to a site like Imgur, then paste the link here. -->
-
-**VisionPrompt Agent is an advanced, agentic visual prompt engineer designed to reverse-engineer images into detailed, structured, and highly effective prompts for generative AI models like Midjourney, SDXL, and DALL-E 3.**
+**VisionFlow is an advanced, agent-based creative tool that transforms static images into dynamic prompts for both AI image and video generation.**
 
 [![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)](https://streamlit.io)
 [![Agent Orchestration](https://img.shields.io/badge/Agents-LangGraph-E86F2C)](https://langchain.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-<!-- Replace '#' with your deployed app's URL -->
-**[▶️ View Live Demo](#)**
+It's designed for artists, designers, and storytellers who want to maintain **creative continuity**—bridging the gap between a single visual idea and a full-fledged cinematic scene. Instead of just generating outputs, VisionFlow provides you with world-class, production-ready prompts to use in your favorite tools like Midjourney, Stable Diffusion, Runway, or Pika.
 
 ---
 
 ## ✨ Core Features
 
-This tool leverages a multi-agent system built with LangGraph to provide a sophisticated analysis and prompt generation workflow:
+VisionFlow operates as a modular, two-stage workflow powered by a team of specialized AI agents:
 
-*   **Image Upload**: Accepts `.jpg`, `.png`, and `.webp` images.
-*   **Deep Visual Analysis**: A `VisualAnalystAgent` deconstructs the image into structured JSON, analyzing technical specs, composition, colors, style, and more.
-*   **Expert Prompt Synthesis**: A `PromptEngineerAgent` takes the structured analysis and a user-defined style to craft a cohesive, high-quality prompt optimized for AI image generators.
-*   **Iterative Refinement**: A `RefinementAgent` allows you to conversationally edit and improve the generated prompt with natural language instructions.
-*   **Prompt History**: Keeps track of every version of your prompt throughout a session for easy comparison and reference.
+### **Stage 1: Image → Image Prompt (Prompt A)**
+Upload any source image and the **VisualAnalystAgent** deconstructs its style, mood, and composition. Then, the **PromptEngineerAgent**, acting as a legendary prompt artist, synthesizes this analysis into a rich, evocative prompt perfect for generating new, high-fidelity images.
+
+*   **Deep Visual Analysis**: Goes beyond keywords to understand artistic intent.
+*   **Creative Prompt Synthesis**: Generates prompts that are more artistic and nuanced than simple descriptions.
+*   **Iterative Refinement**: A built-in loop allows you to conversationally edit and perfect the prompt with the **RefinerAgent**.
+
+### **Stage 2: Image → Video Prompt (Prompt B)**
+This is where the magic of creative continuity happens. You can either:
+1.  Upload the image you generated with Prompt A.
+2.  Upload any new image to start fresh.
+
+The **VideoDirectorAgent** then steps in.
+*   **Context-Aware Direction**: If you use the full workflow, the agent analyzes **both** the original source image and the new image to understand the creative evolution, producing a video prompt that honors the original artistic soul.
+*   **AI Collaboration via Creative Brief**: Don't know how to describe camera movements? No problem. A guided "Creative Brief" lets you suggest moods and ideas, and the AI Director elevates them into professional cinematic language.
+
+---
+
+## 🚀 The Agentic Workflow
+
+VisionFlow is built on a sophisticated, conditional graph using **LangGraph**. This allows for a flexible, multi-agent system where different AI specialists collaborate to bring your vision to life.
+
+| Agent                 | Role                                                                        | Core Task                                                   |
+| --------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **VisualAnalyst**     | A seasoned Art Director                                                     | Deconstructs an image into structured, artistic insights.   |
+| **PromptEngineer**    | A legendary Prompt Artist                                                   | Synthesizes analysis into a masterful text-to-image prompt. |
+| **VideoDirector**     | A visionary Film Director                                                   | Translates images and ideas into cinematic video direction. |
+| **Refiner**           | A master Prompt Editor                                                      | Seamlessly integrates user feedback into any prompt.        |
+
+---
 
 ## 🛠️ Tech Stack
 
-This project is built with a modern, 2025-ready open-source tech stack:
+This project is built with a modern, 2025-ready open-source stack:
 
-*   **Frontend**: [Streamlit](https://streamlit.io/) for a fast, interactive web UI.
-*   **Agent Framework**: [LangGraph](https://github.com/langchain-ai/langgraph) for building robust, stateful, and modular multi-agent workflows.
-*   **LLM Integration**: [LangChain](https://www.langchain.com/) (`langchain_openai`) to connect with powerful multimodal models like GPT-4o.
-*   **Environment Management**: [Poetry](https://python-poetry.org/) for deterministic dependency management and packaging.
-*   **Image Processing**: [Pillow](https://python-pillow.org/) for handling image data.
-*   **Secrets Management**: `python-dotenv` for secure handling of API keys.
+*   **Frontend**: [Streamlit](https://streamlit.io/)
+*   **Agent Orchestration**: [LangGraph](https://github.com/langchain-ai/langgraph)
+*   **LLM Integration**: [LangChain](https://www.langchain.com/) (using GPT-4o)
+*   **Prompt Templating**: [Jinja2](https://jinja.palletsprojects.com/)
+*   **Data Validation**: [Pydantic](https://pydantic.dev/)
+*   **Dependency Management**: [Poetry](https://python-poetry.org/)
 
-## 🚀 Getting Started
 
-Follow these steps to set up and run the VisionPrompt Agent locally.
+🗺️ Future Roadmap
 
-### 1. Prerequisites
+Style Memory: Allow users to save and reuse preferred aesthetic profiles.
 
-*   Python 3.10+
-*   [Poetry](https://python-poetry.org/docs/#installation) installed on your system.
-*   An [OpenAI API Key](https://platform.openai.com/api-keys).
+Direct API Integration: One-click generation by connecting directly to image/video APIs like Fal.ai or Replicate.
 
-### 2. Installation
+Visual Feedback Loop: Use CLIP or other vision models to score the alignment of generated prompts.
 
-First, clone the repository to your local machine:
-```bash
-git clone https://github.com/your-username/visionprompt-agent.git
-cd visionprompt-agent
-Use code with caution.
-Markdown
-Next, install the required dependencies using Poetry. This will create a virtual environment and install all packages specified in pyproject.toml.
-
-Generated bash
-poetry install
-Use code with caution.
-Bash
-3. Configure Environment Variables
-The application requires an OpenAI API key to function.
-
-Find the .env.example file in the root directory and rename it to .env:
-
-Generated bash
-mv .env.example .env
-Use code with caution.
-Bash
-If you don't have an example file, simply create a new file named .env.
-
-Open the .env file and add your OpenAI API key:
-
-Generated code
-# .env
-OPENAI_API_KEY="sk-YourSecretKeyGoesHere"
-Use code with caution.
-4. Run the Application
-Once the installation and configuration are complete, you can run the Streamlit application from the project's root directory:
-
-Generated bash
-poetry run streamlit run src/app.py
-Use code with caution.
-Bash
-The application should now be running and accessible in your web browser, typically at http://localhost:8501.
-
-📖 How to Use
-Upload an Image: Drag and drop an image file or use the "Browse files" button in the sidebar.
-
-Define a Style: Optionally, enter a target style you want the final prompt to reflect (e.g., "8-bit pixel art", "cinematic film still", "minimalist line art").
-
-Analyze: Click the "✨ Analyze and Generate Prompt" button. The agentic workflow will execute, and a detailed prompt will appear.
-
-Refine: Type a natural language instruction into the "Refine Your Prompt" box (e.g., "make it a rainy day", "add a sense of mystery"). Click the "🔄 Refine Prompt" button to get an updated version.
-
-Review: The "Prompt History" expander shows all previous versions of your prompt for easy tracking.
-
-📝 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+Advanced Prompt History: Save, search, and tag your favorite prompts in a persistent database like ChromaDB.
