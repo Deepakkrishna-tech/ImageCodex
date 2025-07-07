@@ -1,6 +1,6 @@
-# 🎨 VisionFlow: Your AI Creative Partner
+# 🎨 ImageCodeX: Your AI Creative Partner
 
-**VisionFlow is an advanced, agent-based creative tool that transforms static images into dynamic prompts for both AI image and video generation.**
+**ImageCodeX is an advanced, agent-based creative tool that transforms static images into dynamic prompts for both AI image and video generation.**
 
 [![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)](https://streamlit.io)
