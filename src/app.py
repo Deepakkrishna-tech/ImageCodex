@@ -5,7 +5,7 @@ from typing import Dict, Any
 
 from core.graph import build_visionflow_graph
 from core.schemas import AppState, ImagePrompt, VideoCreativeBrief
-# We will use the native st.code() for copy functionality.
+# Using the native st.code() for copy functionality.
 
 # --- Page Config & Initialization ---
 st.set_page_config(page_title="VisionFlow", layout="wide", page_icon="🎨")
@@ -24,9 +24,12 @@ def update_state(new_data: Dict[str, Any]):
     st.session_state.session_state_dict.update(new_data)
 
 def invoke_graph(input_data: Dict[str, Any]):
+    """Invokes the graph with given data, updates the state, and triggers a rerun."""
     with st.spinner("🚀 VisionFlow agents are working..."):
         result = app_graph.invoke(input_data)
         st.session_state.session_state_dict = result
+    # THE FIX: Immediately rerun the script to reflect the new state in the UI.
+    st.rerun()
 
 # --- UI Rendering ---
 st.title("🎨 VisionFlow")
@@ -54,7 +57,6 @@ with tab1:
         if current_state_dict.get("image_prompt"):
             prompt_obj = ImagePrompt.model_validate(current_state_dict["image_prompt"])
             
-            # CORRECTED: Using clean, multi-line statements.
             st.write("**Prompt Preview:**")
             with st.container(border=True):
                 st.markdown(prompt_obj.prompt_body)
@@ -119,7 +121,6 @@ with tab2:
         if current_state_dict.get("video_prompt"):
             video_prompt = current_state_dict["video_prompt"]
             
-            # CORRECTED: Using clean, multi-line statements.
             st.write("**Video Direction Preview:**")
             with st.container(border=True):
                 st.markdown(video_prompt)
