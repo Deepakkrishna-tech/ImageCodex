@@ -1,25 +1,29 @@
 # src/agents/prompt_engineer.py
-from jinja2 import Template
-from langchain_openai import ChatOpenAI
+import json
 from typing import Dict, Any
-
-from core.schemas import ImagePrompt
-from core.prompts import IMAGE_PROMPT_ENGINEER_TEMPLATE
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from ..core.schemas import ImagePrompt, VisualAnalysis
+from ..core.prompts import PROMPT_ENGINEER_PROMPT
 
 def run_prompt_engineer(state: Dict[str, Any]) -> Dict[str, Any]:
-    """Invokes the PromptEngineerAgent to synthesize Prompt A."""
     print("---AGENT: PROMPT ENGINEER---")
+    print(f"STATE KEYS RECEIVED BY PROMPT_ENGINEER: {list(state.keys())}")
 
-    model = ChatOpenAI(model="gpt-4o", temperature=0.7)
-    template = Template(IMAGE_PROMPT_ENGINEER_TEMPLATE)
+    analysis: VisualAnalysis = state.get("visual_analysis")
+    if not analysis:
+        print("---AGENT: SKIPPING PROMPT ENGINEER - NO VISUAL ANALYSIS---")
+        return state
 
-    prompt_str = template.render(analysis=state['visual_analysis'])
-    response = model.invoke(prompt_str)
-
-    final_prompt = ImagePrompt(prompt_body=response.content)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0.5)
+    structured_llm = llm.with_structured_output(ImagePrompt)
+    prompt = ChatPromptTemplate.from_template(PROMPT_ENGINEER_PROMPT)
+    chain = prompt | structured_llm
+    analysis_json_string = json.dumps(analysis.model_dump(), indent=2)
+    response = chain.invoke({"analysis": analysis_json_string})
     
-    state['image_prompt'] = final_prompt
-    if 'prompt_history' not in state:
-        state['prompt_history'] = []
-    state['prompt_history'].append(final_prompt.prompt_body)
+    print("---AGENT: Generated Image Prompt---")
+    
+    # --- THIS IS THE FIX ---
+    state["image_prompt"] = response
     return state

@@ -1,140 +1,106 @@
 # src/app.py
+# Final Refined Version - No logo, dev sidebar enabled.
+
 import streamlit as st
 from dotenv import load_dotenv
-from typing import Dict, Any
 
-from core.graph import build_visionflow_graph
-from core.schemas import AppState, ImagePrompt, VideoCreativeBrief
-# Using the native st.code() for copy functionality.
+# --- RELATIVE IMPORTS ---
+from .core.schemas import AppState, VideoCreativeBrief
+from .graph.graphs import build_visual_workflow_graph, build_narrative_workflow_graph
+from .ui.visual_prompting_ui import render_stage1_ui, render_stage2_ui
+from .ui.stage3_ui import render_narrative_engine
 
-# --- Page Config & Initialization ---
-st.set_page_config(page_title="VisionFlow", layout="wide", page_icon="🎨")
+# --- INITIAL SETUP ---
 load_dotenv()
-@st.cache_resource
-def get_graph():
-    return build_visionflow_graph()
-app_graph = get_graph()
+st.set_page_config(page_title="ImageCodeX", layout="wide", initial_sidebar_state="auto")
 
-# --- Session State Management ---
-if "session_state_dict" not in st.session_state:
-    st.session_state.session_state_dict = AppState().model_dump()
 
-# --- Helper Functions ---
-def update_state(new_data: Dict[str, Any]):
-    st.session_state.session_state_dict.update(new_data)
+# [The AppController class remains exactly the same]
+class AppController:
+    """A dedicated controller to manage the application's state and logic."""
+    def __init__(self):
+        if 'app_state' not in st.session_state:
+            st.session_state['app_state'] = AppState().model_dump()
+        self.state: AppState = AppState.model_validate(st.session_state['app_state'])
 
-def invoke_graph(input_data: Dict[str, Any]):
-    """Invokes the graph with given data, updates the state, and triggers a rerun."""
-    with st.spinner("🚀 VisionFlow agents are working..."):
-        result = app_graph.invoke(input_data)
-        st.session_state.session_state_dict = result
-    # THE FIX: Immediately rerun the script to reflect the new state in the UI.
-    st.rerun()
+    def _update_and_persist_state(self, new_state: AppState):
+        self.state = new_state
+        st.session_state['app_state'] = self.state.model_dump()
 
-# --- UI Rendering ---
-st.title("🎨 VisionFlow")
-st.markdown("Your AI partner for turning static images into cinematic stories.")
+    def _run_graph(self, graph_builder_func, input_state_dict: dict, workflow_name: str):
+        with st.spinner(f"The AI team is working... ({workflow_name})"):
+            try:
+                graph = graph_builder_func()
+                final_state_dict = graph.invoke(input_state_dict)
+                final_state = AppState.model_validate(final_state_dict)
+                self._update_and_persist_state(final_state)
+            except Exception as e:
+                st.error(f"An error occurred in the {workflow_name}.")
+                st.exception(e)
 
-tab1, tab2 = st.tabs(["**Stage 1: Generate Prompt A**", "**Stage 2: Generate Prompt B**"])
-current_state_dict = st.session_state.session_state_dict
+    def run_visual_workflow(self, image_bytes: bytes = None, video_brief: VideoCreativeBrief = None, feedback: str = None, refinement_target: str = None):
+        state_dict = self.state.model_dump()
+        if image_bytes: state_dict['original_image_bytes'] = image_bytes
+        if video_brief:
+            state_dict.update({
+                'visual_analysis': None, 'image_prompt': None, 'prompt_critique': None,
+                'video_creative_brief': video_brief.model_dump()
+            })
+        if feedback and refinement_target:
+            state_dict['user_feedback'] = feedback
+            state_dict['active_prompt_for_refinement'] = refinement_target
+        self._run_graph(build_visual_workflow_graph, state_dict, "Visual Workflow")
 
-# === TAB 1: IMAGE TO IMAGE PROMPT (PROMPT A) ===
-with tab1:
-    st.header("Image → Image Prompt")
-    st.caption("Upload your source artwork to generate a new, high-fidelity image prompt.")
-    col1, col2 = st.columns(2, gap="large")
+   # In src/app.py, inside the AppController class
 
-    with col1:
-        uploaded_file_A = st.file_uploader("Upload your creative starting point...", type=["jpg", "png", "jpeg"], key="uploader_A")
-        if uploaded_file_A:
-            st.image(uploaded_file_A, caption="Source Image Preview", use_container_width=True)
-            if st.button("Generate Image Prompt", use_container_width=True, type="primary", key="button_A"):
-                image_bytes = uploaded_file_A.getvalue()
-                invoke_graph({"original_image_bytes": image_bytes, "prompt_history": current_state_dict.get("prompt_history", [])})
+    def run_narrative_workflow(self, image_bytes: bytes = None, text_idea: str = None, genre: str = None, mood: str = None):
+        """Handles all logic for Stage 3, now including genre and mood."""
+        state_dict = self.state.model_dump()
         
-    with col2:
-        st.subheader("✅ Prompt A: For Text-to-Image")
-        if current_state_dict.get("image_prompt"):
-            prompt_obj = ImagePrompt.model_validate(current_state_dict["image_prompt"])
-            
-            st.write("**Prompt Preview:**")
-            with st.container(border=True):
-                st.markdown(prompt_obj.prompt_body)
-            
-            st.write("")
-            st.write("**Copyable Prompt & Parameters:**")
-            st.code(prompt_obj.prompt_body, language="text")
-            st.code(prompt_obj.technical_parameters, language="bash")
-            
-            with st.form("refine_A_form"):
-                st.write("**Refine Prompt A:**")
-                refinement_query_A = st.text_input("Enter your changes...", label_visibility="collapsed", key="refine_A_input")
-                if st.form_submit_button("Refine", use_container_width=True):
-                    if refinement_query_A:
-                        update_state({'user_feedback': refinement_query_A, 'active_prompt_for_refinement': "image"})
-                        invoke_graph(st.session_state.session_state_dict)
-        else:
-            st.info("Your generated image prompt will appear here.")
+        # We reset the narrative state to ensure a clean run each time
+        narrative_input = {}
+        
+        if image_bytes: narrative_input['input_image_bytes'] = image_bytes
+        if text_idea: narrative_input['initial_idea'] = text_idea
+        if genre: narrative_input['genre'] = genre
+        if mood: narrative_input['mood'] = mood
+        
+        # Overwrite the old narrative state with the new inputs
+        state_dict['narrative_state'] = narrative_input
+        self._run_graph(build_narrative_workflow_graph, state_dict, "Narrative Workflow")
 
-# === TAB 2: IMAGE TO VIDEO PROMPT (PROMPT B) ===
-with tab2:
-    st.header("Image → Video Prompt")
-    st.caption("Upload any image and provide a creative brief to generate a cinematic video direction.")
-    col3, col4 = st.columns(2, gap="large")
 
-    with col3:
-        with st.form("creative_brief_form"):
-            st.subheader("Creative Brief")
-            uploaded_file_B = st.file_uploader("1. Upload Image to Animate", type=["jpg", "png", "jpeg"])
-            
-            moods = st.multiselect(
-                "2. Select Moods (Optional)",
-                ["Epic & Grandiose", "Tense & Suspenseful", "Dreamy & Surreal", "Fast-Paced & Energetic", "Calm & Serene", "Dark & Mysterious"]
-            )
-            camera_move = st.selectbox(
-                "3. Suggest Camera Movement (Optional)",
-                ["(AI Decides)", "Slow Push-In", "Fast Pull-Out", "Tracking Shot (Follow Subject)", "Crane Shot (Up/Down)", "Static / No Movement"]
-            )
-            notes = st.text_area("4. Additional Notes (Optional)", placeholder="e.g., 'focus on the character's eyes', 'make the rain feel heavy'")
-            
-            submitted = st.form_submit_button("Generate Video Prompt", use_container_width=True, type="primary")
+def main():
+    """The main entry point called by run_app.py."""
+    controller = AppController()
 
-            if submitted and uploaded_file_B:
-                image_bytes_B = uploaded_file_B.getvalue()
-                brief = VideoCreativeBrief(
-                    moods=moods,
-                    camera_movement=camera_move if camera_move != "(AI Decides)" else None,
-                    additional_notes=notes
-                )
-                
-                update_state({
-                    'generated_image_bytes': image_bytes_B,
-                    'video_creative_brief': brief.model_dump()
-                })
-                invoke_graph(st.session_state.session_state_dict)
+    # --- DEV SIDEBAR (KEPT FOR DEBUGGING) ---
+    # This is your most important tool. Do not remove it during development.
+    with st.sidebar:
+        st.header("Dev: App State")
+        if st.button("Clear All State"):
+            st.session_state.clear()
+            st.rerun()
+        st.json(st.session_state.get('app_state', {}), expanded=False)
+    
+    # --- HEADER (LOGO CODE REMOVED) ---
+    st.title("ImageCodeX")
+    st.markdown("#### Your AI partner for turning static images into cinematic stories.")
+    st.divider()
 
-        if current_state_dict.get("generated_image_bytes"):
-            st.image(current_state_dict["generated_image_bytes"], caption="Image for Video Prompting", use_container_width=True)
+    # --- MAIN NAVIGATION ---
+    stages = ["Stage 1: Image Prompt", "Stage 2: Video Prompt", "Stage 3: Narrative Engine"]
+    active_stage = st.radio(
+        "Select a Stage:", stages, horizontal=True, label_visibility="collapsed"
+    )
 
-    with col4:
-        st.subheader("🎬 Prompt B: For Video")
-        if current_state_dict.get("video_prompt"):
-            video_prompt = current_state_dict["video_prompt"]
-            
-            st.write("**Video Direction Preview:**")
-            with st.container(border=True):
-                st.markdown(video_prompt)
+    # --- RENDER ACTIVE STAGE ---
+    if active_stage == "Stage 1: Image Prompt":
+        render_stage1_ui(controller)
+    elif active_stage == "Stage 2: Video Prompt":
+        render_stage2_ui(controller)
+    elif active_stage == "Stage 3: Narrative Engine":
+        render_narrative_engine(controller)
 
-            st.write("")
-            st.write("**Copyable Video Direction:**")
-            st.code(video_prompt, language="text")
-            
-            with st.form("refine_B_form"):
-                st.write("**Refine Prompt B:**")
-                refinement_query_B = st.text_input("Enter your changes...", label_visibility="collapsed", key="refine_B_input")
-                if st.form_submit_button("Refine", use_container_width=True):
-                    if refinement_query_B:
-                        update_state({'user_feedback': refinement_query_B, 'active_prompt_for_refinement': "video"})
-                        invoke_graph(st.session_state.session_state_dict)
-        else:
-            st.info("Your generated video prompt will appear here.")
+if __name__ == "__main__":
+    main()

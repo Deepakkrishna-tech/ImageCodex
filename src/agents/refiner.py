@@ -1,50 +1,71 @@
 # src/agents/refiner.py
-from jinja2 import Template
-from langchain_openai import ChatOpenAI
-from typing import Dict, Any, Literal
+# FINAL VERIFIED VERSION - Corrected the prompt import and added robust logic.
 
-from core.prompts import PROMPT_REFINER_TEMPLATE
-from core.schemas import ImagePrompt
+from typing import Dict, Any
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from ..core.schemas import ImagePrompt
+
+# --- THIS IS THE FIX ---
+# We are now importing the correct variable name from the prompts file.
+from ..core.prompts import PROMPT_REFINER_PROMPT
 
 def run_refiner(state: Dict[str, Any]) -> Dict[str, Any]:
-    """Invokes the generic RefinementAgent to edit a prompt based on user feedback."""
-    print("---AGENT: REFINER---")
-
-    model = ChatOpenAI(model="gpt-4o", temperature=0.7)
-    template = Template(PROMPT_REFINER_TEMPLATE)
-
-    active_prompt_type: Literal["image", "video"] = state.get("active_prompt_for_refinement")
-    prompt_to_refine = ""
-
-    if active_prompt_type == "video" and state.get("video_prompt"):
-        prompt_to_refine = state["video_prompt"]
-    elif active_prompt_type == "image" and state.get("image_prompt"):
-        # ImagePrompt is a Pydantic model, so we access its attribute
-        prompt_to_refine = state["image_prompt"].prompt_body
+    """
+    Takes user feedback and refines an existing prompt (either image or video).
+    """
+    print("---AGENT: PROMPT REFINER---")
     
-    if not prompt_to_refine:
-        # Failsafe if the state is not set correctly
-        state['user_feedback'] = None # Clear feedback to prevent loop
-        return state
-
-    prompt_str = template.render(
-        original_prompt=prompt_to_refine,
-        user_feedback=state['user_feedback']
-    )
+    user_feedback = state.get("user_feedback")
+    refinement_target = state.get("active_prompt_for_refinement")
     
-    response = model.invoke(prompt_str)
-    refined_prompt = response.content
+    if not user_feedback or not refinement_target:
+        print("---AGENT: SKIPPING REFINER - NO FEEDBACK OR TARGET---")
+        return {}
 
-    # Update the correct prompt in the state
-    if active_prompt_type == "video":
-        state["video_prompt"] = refined_prompt
-    elif active_prompt_type == "image":
-        # We need to recreate the Pydantic object
-        current_params = state["image_prompt"].technical_parameters
-        state["image_prompt"] = ImagePrompt(prompt_body=refined_prompt, technical_parameters=current_params)
+    # Determine which prompt to refine based on the target
+    if refinement_target == "image":
+        original_prompt_obj: ImagePrompt = state.get("image_prompt")
+        if not original_prompt_obj:
+            return {"user_feedback": None} # Nothing to refine, clear feedback
+        original_prompt_text = original_prompt_obj.prompt_body
+    elif refinement_target == "video":
+        original_prompt_text = state.get("video_prompt")
+        if not original_prompt_text:
+            return {"user_feedback": None} # Nothing to refine, clear feedback
+    else:
+        return {"user_feedback": None} # Invalid target, clear feedback
+
+    # Initialize the LLM
+    llm = ChatOpenAI(model="gpt-4o", temperature=0.5)
+
+    # --- THIS IS THE SECOND PART OF THE FIX ---
+    # Create the prompt template using the CORRECT variable name.
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_REFINER_PROMPT)
     
-    state['prompt_history'].append(refined_prompt)
-    # CRITICAL: Clear the user feedback to prevent an infinite loop.
-    state['user_feedback'] = None
+    chain = prompt_template | llm
 
-    return state
+    # Invoke the chain to get the refined prompt string
+    refined_prompt_str = chain.invoke({
+        "original_prompt": original_prompt_text,
+        "user_feedback": user_feedback
+    }).content
+    
+    print(f"---AGENT: Refined prompt to: {refined_prompt_str[:100]}...---")
+
+    # Prepare the state update dictionary
+    update_dict = {
+        "user_feedback": None,  # Clear feedback to prevent loops
+        "active_prompt_for_refinement": None # Clear target
+    }
+
+    # Update the correct part of the state with the new prompt
+    if refinement_target == "image":
+        # When refining an image prompt, we only update the body, keeping the tech parameters.
+        original_prompt_obj.prompt_body = refined_prompt_str
+        update_dict["image_prompt"] = original_prompt_obj
+    elif refinement_target == "video":
+        update_dict["video_prompt"] = refined_prompt_str
+        
+    return update_dict
