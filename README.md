@@ -100,3 +100,51 @@ The Stage 3 graph is orchestrated by an `inspiration_router` that directs the fl
 3.  **If "AI Imagination":** The flow skips the search agents and goes directly to the next step.
 
 All paths converge on the `context_engineer`, which prepares the final brief for the `storytelling_agent` to generate the output.
+
+## 🛠️ Installation
+
+**Requirements:**
+-   Python 3.10+ 🐍
+-   Poetry 📦
+-   Git 🌿
+
+**1. Clone the repository:**
+```sh
+git clone https://github.com/Deepakkrishna-tech/ImageCodeX.git
+cd ImageCodeX
+```
+
+**2. Create the Environment File:**
+Create a file named `.env` in the root of the project directory and add your API keys. The `TAVILY_API_KEY` is now required for Stage 3.
+```env
+# For OpenAI models like GPT-4o
+OPENAI_API_KEY="sk-..."
+
+# For Replicate models (e.g., SDXL)
+REPLICATE_API_TOKEN="r8_..."
+
+# For the Tavily web search tool (used in Stage 3)
+TAVILY_API_KEY="tvly-..."
+```
+
+**3. Install Dependencies:**
+This command will create a virtual environment and install all necessary packages, including the new `langchain-tavily` library.
+```sh
+poetry install
+```
+
+**4. Run the App:**
+Use the unified `run_app.py` script. This works on Windows, macOS, and Linux.
+```sh
+poetry run streamlit run run_app.py
+```
+
+## 🌱 Extending & Contributing
+
+-   Fork and clone the repo.
+-   Add new agents or UI stages as needed.
+-   Submit pull requests for improvements or bug fixes.
+
+## 📜 License
+
+MIT License. See `LICENSE` for details. 📄
