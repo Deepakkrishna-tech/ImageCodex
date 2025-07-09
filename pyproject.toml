@@ -21,6 +21,7 @@ pydantic = ">=2.7.0"
 replicate = "^0.29.0" # <-- This is the new, correctly formatted dependency
 langchain-community = "^0.3.27"
 tavily-python = "^0.7.9"
+langchain-tavily = "^0.2.7"
 
 [build-system]
 requires = ["poetry-core"]
