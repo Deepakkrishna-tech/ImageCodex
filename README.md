@@ -1,69 +1,207 @@
-# 🎨 ImageCodeX: Your AI Creative Partner
+# ImageCodeX
 
-**ImageCodeX is an advanced, agent-based creative tool that transforms static images into dynamic prompts for both AI image and video generation.**
+**ImageCodeX** is an agentic visual prompt engineer that transforms static images into cinematic stories using AI. It provides a multi-stage workflow for generating image prompts, cinematic video prompts, and narrative story arcs—all through a modern Streamlit UI.
 
 [![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)](https://streamlit.io)
 [![Agent Orchestration](https://img.shields.io/badge/Agents-LangGraph-E86F2C)](https://langchain.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+---
 
-It's designed for artists, designers, and storytellers who want to maintain **creative continuity**—bridging the gap between a single visual idea and a full-fledged cinematic scene. Instead of just generating outputs, VisionFlow provides you with world-class, production-ready prompts to use in your favorite tools like Midjourney, Stable Diffusion, Runway, or Pika.
+## Features
+
+- **Stage 1: Image Prompt Generation**
+  - Upload an image and receive a detailed, model-ready text-to-image prompt.
+  - Automated analysis of artistic elements, style, mood, and composition.
+  - Prompt critique and refinement with user feedback.
+
+- **Stage 2: Video Prompt Generation**
+  - Extend your image into a cinematic video prompt.
+  - Provide creative briefs (mood, camera movement, notes) for tailored video prompt output.
+
+- **Stage 3: Narrative Engine**
+  - Turn your visuals and ideas into structured story arcs and screenplay scenes.
+  - Supports genre and mood customization.
+
+- **Developer Tools**
+  - Dev sidebar for inspecting and clearing app state.
+  - Modular, agent-based architecture for easy extension.
 
 ---
 
-## ✨ Core Features
+## Demo
 
-VisionFlow operates as a modular, two-stage workflow powered by a team of specialized AI agents:
+![ImageCodeX UI Screenshot](docs/screenshot.png)
+<!-- Replace with your actual screenshot path -->
 
-### **Stage 1: Image → Image Prompt (Prompt A)**
-Upload any source image and the **VisualAnalystAgent** deconstructs its style, mood, and composition. Then, the **PromptEngineerAgent**, acting as a legendary prompt artist, synthesizes this analysis into a rich, evocative prompt perfect for generating new, high-fidelity images.
-
-*   **Deep Visual Analysis**: Goes beyond keywords to understand artistic intent.
-*   **Creative Prompt Synthesis**: Generates prompts that are more artistic and nuanced than simple descriptions.
-*   **Iterative Refinement**: A built-in loop allows you to conversationally edit and perfect the prompt with the **RefinerAgent**.
-
-### **Stage 2: Image → Video Prompt (Prompt B)**
-This is where the magic of creative continuity happens. You can either:
-1.  Upload the image you generated with Prompt A.
-2.  Upload any new image to start fresh.
-
-The **VideoDirectorAgent** then steps in.
-*   **Context-Aware Direction**: If you use the full workflow, the agent analyzes **both** the original source image and the new image to understand the creative evolution, producing a video prompt that honors the original artistic soul.
-*   **AI Collaboration via Creative Brief**: Don't know how to describe camera movements? No problem. A guided "Creative Brief" lets you suggest moods and ideas, and the AI Director elevates them into professional cinematic language.
+[![Watch the demo](https://img.youtube.com/vi/your_video_id/0.jpg)](https://youtu.be/your_video_id)
+<!-- Replace with your actual YouTube video link -->
 
 ---
 
-## 🚀 The Agentic Workflow
+## Installation
 
-VisionFlow is built on a sophisticated, conditional graph using **LangGraph**. This allows for a flexible, multi-agent system where different AI specialists collaborate to bring your vision to life.
+**Requirements:**
+- Python 3.13+
+- [Poetry](https://python-poetry.org/)
+- Git
 
-| Agent                 | Role                                                                        | Core Task                                                   |
-| --------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **VisualAnalyst**     | A seasoned Art Director                                                     | Deconstructs an image into structured, artistic insights.   |
-| **PromptEngineer**    | A legendary Prompt Artist                                                   | Synthesizes analysis into a masterful text-to-image prompt. |
-| **VideoDirector**     | A visionary Film Director                                                   | Translates images and ideas into cinematic video direction. |
-| **Refiner**           | A master Prompt Editor                                                      | Seamlessly integrates user feedback into any prompt.        |
+**Clone and install dependencies:**
+```sh
+git clone https://github.com/Deepakkrishna-tech/ImageCodex.git
+cd ImageCodex
+poetry install
+```
+
+**Run the app:**
+```sh
+# On Windows (PowerShell)
+$env:PYTHONPATH = "."
+poetry run streamlit run src/app.py
+
+# On Linux/macOS
+PYTHONPATH=. poetry run streamlit run src/app.py
+```
 
 ---
 
-## 🛠️ Tech Stack
+## Usage
 
-This project is built with a modern, 2025-ready open-source stack:
+1. **Stage 1: Image Prompt**
+   - Upload an image (PNG/JPG).
+   - Click "Analyze and Generate Prompt".
+   - Review the generated prompt and critique.
+   - Optionally, refine the prompt with feedback.
 
-*   **Frontend**: [Streamlit](https://streamlit.io/)
-*   **Agent Orchestration**: [LangGraph](https://github.com/langchain-ai/langgraph)
-*   **LLM Integration**: [LangChain](https://www.langchain.com/) (using GPT-4o)
-*   **Prompt Templating**: [Jinja2](https://jinja.palletsprojects.com/)
-*   **Data Validation**: [Pydantic](https://pydantic.dev/)
-*   **Dependency Management**: [Poetry](https://python-poetry.org/)
+2. **Stage 2: Video Prompt**
+   - Upload an image for video.
+   - Enter moods, camera movement, and notes.
+   - Click "Generate Video Prompt".
+   - Review the cinematic video prompt.
 
+3. **Stage 3: Narrative Engine**
+   - Provide an image, idea, genre, and mood.
+   - Generate a story arc and screenplay scenes.
 
-🗺️ Future Roadmap
+---
 
-Style Memory: Allow users to save and reuse preferred aesthetic profiles.
+Here’s an improved README section covering the **tech stack**, a **clear file structure with explanations**, and a **detailed agentic workflow** with each agent’s role.
 
-Direct API Integration: One-click generation by connecting directly to image/video APIs like Fal.ai or Replicate.
+---
 
-Visual Feedback Loop: Use CLIP or other vision models to score the alignment of generated prompts.
+## Tech Stack
 
-Advanced Prompt History: Save, search, and tag your favorite prompts in a persistent database like ChromaDB.
+- **Python 3.13+**
+- **Streamlit** – Interactive web UI
+- **Pydantic** – Data validation and modeling
+- **LangChain / LangGraph** – Agentic workflow orchestration
+- **OpenAI API** (via `langchain-openai`) – LLM-powered agents
+- **Pillow** – Image processing
+- **Poetry** – Dependency management
+- **dotenv** – Environment variable management
+
+---
+
+## File Structure
+
+```
+visionprompt-agent/
+│
+├── .env                  # API keys and environment variables
+├── pyproject.toml        # Poetry project config
+├── run_app.py            # Shortcut to run the app
+├── test_api.py           # API test script
+│
+└── src/
+    │
+    ├── app.py            # Main Streamlit app and controller
+    │
+    ├── agents/           # All agent modules (see below)
+    │   ├── film_story_writer.py
+    │   ├── inspector.py
+    │   ├── prompt_engineer.py
+    │   ├── refiner.py
+    │   ├── script_expert.py
+    │   ├── storyboard_artist.py
+    │   ├── utils.py
+    │   ├── video_director.py
+    │   ├── visual_analyst.py
+    │   └── __init__.py
+    │
+    ├── core/
+    │   ├── prompts.py    # Prompt templates for agents
+    │   ├── schemas.py    # Pydantic models for app state and data
+    │   └── __init__.py
+    │
+    ├── graph/
+    │   ├── graphs.py     # Workflow graphs connecting agents
+    │   └── __init__.py
+    │
+    └── ui/
+        ├── stage3_ui.py  # UI for narrative engine
+        ├── visual_prompting_ui.py # UI for image/video prompt stages
+        └── __init__.py
+```
+---
+
+## Agentic Workflow & Agent Roles
+
+The core of ImageCodeX is a **multi-agent workflow** orchestrated by LangGraph. Each agent is an expert in a specific creative or analytical task:
+
+| Agent Name            | Role in Workflow                                                                 |
+|-----------------------|----------------------------------------------------------------------------------|
+| **visual_analyst**    | Analyzes uploaded images for subject, style, mood, lighting, and composition.    |
+| **prompt_engineer**   | Generates detailed text-to-image prompts based on the visual analysis.           |
+| **inspector**         | Critiques the generated prompt for accuracy, clarity, and creative fit.          |
+| **refiner**           | Refines prompts based on user feedback and inspector critique.                   |
+| **video_director**    | Converts image prompts and creative briefs into cinematic video prompts.          |
+| **film_story_writer** | Crafts narrative arcs and story beats from visual and textual input.             |
+| **script_expert**     | Expands story arcs into screenplay-style scenes and dialogue.                    |
+| **storyboard_artist** | Generates visual storyboard descriptions for each scene.                         |
+| **utils**             | Shared utility functions for agents.                                             |
+
+### How the Agentic Workflow Works
+
+- **Stage 1: Image Prompting**
+  1. **visual_analyst** analyzes the uploaded image.
+  2. **prompt_engineer** creates a text prompt for image generation.
+  3. **inspector** critiques the prompt.
+  4. **refiner** improves the prompt if user feedback is provided.
+
+- **Stage 2: Video Prompting**
+  1. **video_director** uses the image prompt and a creative brief to generate a cinematic video prompt.
+
+- **Stage 3: Narrative Engine**
+  1. **film_story_writer** builds a story arc from the visual and user input.
+  2. **script_expert** writes screenplay scenes.
+  3. **storyboard_artist** creates visual descriptions for each scene.
+
+All agent steps are orchestrated as a **graph** (see graphs.py), allowing for flexible, modular, and extensible workflows.
+
+---
+
+You can copy this section into your README under **Tech Stack**, **File Structure**, and **Agentic Workflow**.  
+Let me know if you want a diagram or further breakdown!
+
+---
+
+## Key Code Concepts
+
+- **AppController**: Manages app state, workflow execution, and reruns.
+- **Schemas**: All data (prompts, critiques, briefs, narrative) are Pydantic models.
+- **UI**: Streamlit-based, modular per stage.
+- **Workflows**: Each stage is a graph of agentic steps (see `graph/graphs.py`).
+
+---
+
+## Extending & Contributing
+
+- Fork and clone the repo.
+- Add new agents or UI stages as needed.
+- Submit pull requests for improvements or bug fixes.
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
