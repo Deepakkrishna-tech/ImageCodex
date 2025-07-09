@@ -69,49 +69,7 @@
 - **Pillow** – Image processing
 - **Poetry** – Dependency management
 - **dotenv** – Environment variable management
-
----
-
-## File Structure
-
-```
-visionprompt-agent/
-│
-├── .env                  # API keys and environment variables
-├── pyproject.toml        # Poetry project config
-├── run_app.py            # Shortcut to run the app
-├── test_api.py           # API test script
-│
-└── src/
-    │
-    ├── app.py            # Main Streamlit app and controller
-    │
-    ├── agents/           # All agent modules (see below)
-    │   ├── film_story_writer.py
-    │   ├── inspector.py
-    │   ├── prompt_engineer.py
-    │   ├── refiner.py
-    │   ├── script_expert.py
-    │   ├── storyboard_artist.py
-    │   ├── utils.py
-    │   ├── video_director.py
-    │   ├── visual_analyst.py
-    │   └── __init__.py
-    │
-    ├── core/
-    │   ├── prompts.py    # Prompt templates for agents
-    │   ├── schemas.py    # Pydantic models for app state and data
-    │   └── __init__.py
-    │
-    ├── graph/
-    │   ├── graphs.py     # Workflow graphs connecting agents
-    │   └── __init__.py
-    │
-    └── ui/
-        ├── stage3_ui.py  # UI for narrative engine
-        ├── visual_prompting_ui.py # UI for image/video prompt stages
-        └── __init__.py
-```
+  
 ---
 
 ## Agentic Workflow & Agent Roles
@@ -159,8 +117,47 @@ All agent steps are orchestrated as a **graph** (see graphs.py), allowing for fl
 
 ---
 
----
+## File Structure
 
+```
+visionprompt-agent/
+│
+├── .env                  # API keys and environment variables
+├── pyproject.toml        # Poetry project config
+├── run_app.py            # Shortcut to run the app
+├── test_api.py           # API test script
+│
+└── src/
+    │
+    ├── app.py            # Main Streamlit app and controller
+    │
+    ├── agents/           # All agent modules (see below)
+    │   ├── film_story_writer.py
+    │   ├── inspector.py
+    │   ├── prompt_engineer.py
+    │   ├── refiner.py
+    │   ├── script_expert.py
+    │   ├── storyboard_artist.py
+    │   ├── utils.py
+    │   ├── video_director.py
+    │   ├── visual_analyst.py
+    │   └── __init__.py
+    │
+    ├── core/
+    │   ├── prompts.py    # Prompt templates for agents
+    │   ├── schemas.py    # Pydantic models for app state and data
+    │   └── __init__.py
+    │
+    ├── graph/
+    │   ├── graphs.py     # Workflow graphs connecting agents
+    │   └── __init__.py
+    │
+    └── ui/
+        ├── stage3_ui.py  # UI for narrative engine
+        ├── visual_prompting_ui.py # UI for image/video prompt stages
+        └── __init__.py
+```
+---
 ## Installation
 
 **Requirements:**
