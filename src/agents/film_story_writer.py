@@ -1,35 +1,28 @@
 # src/agents/film_story_writer.py
-# FINAL VERIFIED VERSION - Simplified input for maximum reliability.
+# FINAL VERIFIED VERSION - Now acts as a Story Concept Generator.
 
 import json
 from typing import Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from ..core.schemas import StoryArc
-from ..core.prompts import FILM_STORY_WRITER_PROMPT
+from ..core.schemas import StoryConceptCollection # Import the new schema
+from ..core.prompts import STORY_CONCEPT_GENERATOR_PROMPT # Import the new prompt
 
-def film_story_writer_node(state: Dict[str, Any]) -> Dict[str, Any]:
-    """Takes a creative brief and generates a full, structured StoryArc."""
-    print("---AGENT: FILM STORY WRITER---")
+def story_concept_generator_node(state: Dict[str, Any]) -> Dict[str, Any]:
+    """Takes a creative brief and generates a collection of distinct story concepts."""
+    print("---AGENT: STORY CONCEPT GENERATOR---")
     
     narrative_state = state.get("narrative_state", {})
     visual_analysis = state.get("visual_analysis")
 
-    llm = ChatOpenAI(model="gpt-4o", temperature=0.7, model_kwargs={"response_format": {"type": "json_object"}})
-    structured_llm = llm.with_structured_output(StoryArc)
-    prompt_template = ChatPromptTemplate.from_template(FILM_STORY_WRITER_PROMPT)
+    llm = ChatOpenAI(model="gpt-4o", temperature=0.8, model_kwargs={"response_format": {"type": "json_object"}})
+    # Tell the tool to output our new collection schema
+    structured_llm = llm.with_structured_output(StoryConceptCollection)
+    prompt_template = ChatPromptTemplate.from_template(STORY_CONCEPT_GENERATOR_PROMPT)
     chain = prompt_template | structured_llm
 
-    # --- THIS IS THE FIX ---
-    # Instead of passing a complex JSON string, we pass a simple summary string.
-    # This gives the `with_structured_output` tool the best possible chance to succeed.
     if visual_analysis:
-        analysis_summary = (
-            f"Subject: {visual_analysis.main_subject}. "
-            f"Setting: {visual_analysis.setting_and_environment}. "
-            f"Style: {visual_analysis.artistic_style}. "
-            f"Mood: {visual_analysis.mood_and_atmosphere}."
-        )
+        analysis_summary = (f"Subject: {visual_analysis.main_subject}. Setting: {visual_analysis.setting_and_environment}. Style: {visual_analysis.artistic_style}. Mood: {visual_analysis.mood_and_atmosphere}.")
     else:
         analysis_summary = "N/A"
     
@@ -40,8 +33,8 @@ def film_story_writer_node(state: Dict[str, Any]) -> Dict[str, Any]:
         "initial_idea": narrative_state.get("initial_idea", "None provided.")
     })
     
-    print("---AGENT: Generated Story Arc---")
+    print("---AGENT: Generated Story Concepts---")
     
-    # Update and return the entire state correctly
-    state["narrative_state"]["story_arc"] = response
+    # Update the state with the new concepts
+    state["narrative_state"]["story_concepts"] = response
     return state

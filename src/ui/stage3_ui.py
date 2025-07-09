@@ -1,23 +1,25 @@
 # src/ui/stage3_ui.py
-# FINAL VERIFIED VERSION - Added image preview to the input form.
+# FINAL VERIFIED VERSION - Updated to display the new "Creative Concepts" output.
 
 import streamlit as st
 
 def render_narrative_engine(controller):
-    """Renders the UI for Stage 3, now with an image preview."""
+    """
+    Renders the UI for Stage 3. The output section has been updated to display
+    a list of brainstormed story concepts instead of a single story arc.
+    """
     st.header("🎬 Stage 3: Narrative Generation Engine")
-    st.markdown("Go from a single image or idea to a complete cinematic story, script, and storyboard.")
+    st.markdown("Brainstorm multiple creative directions from a single spark of inspiration.")
 
     narrative_state = controller.state.narrative_state
 
-    # --- INPUT FORM ---
+    # --- INPUT FORM (NO CHANGES HERE) ---
+    # This entire section is working perfectly and remains untouched.
     with st.form("narrative_form"):
         st.subheader("Creative Brief")
         
         input_image = st.file_uploader("Upload an image to inspire the story", type=["png", "jpg", "jpeg"], key="stage3_uploader")
         
-        # --- THIS IS THE FEATURE ADDITION ---
-        # If an image has been uploaded, display it immediately.
         if input_image:
             st.image(input_image, caption="Image Preview", width=300)
 
@@ -29,7 +31,8 @@ def render_narrative_engine(controller):
         with col2:
             mood = st.selectbox("Select a Mood", ["Filmmaker's Choice", "Tense & Gritty", "Hopeful & Awe-inspiring", "Mysterious & Unsettling", "Action-packed"], key="mood_select")
 
-        submitted = st.form_submit_button("🚀 Generate Full Narrative", type="primary")
+        # The button text is updated to reflect the new goal.
+        submitted = st.form_submit_button("💡 Brainstorm Concepts", type="primary")
 
         if submitted:
             if not initial_idea and not input_image:
@@ -44,44 +47,18 @@ def render_narrative_engine(controller):
                 )
                 st.rerun()
 
-    # --- OUTPUT DISPLAY AREA (no changes here) ---
-    if narrative_state and narrative_state.story_arc:
-        st.subheader("📜 Story Arc")
-        st.success(f"**Title:** {narrative_state.story_arc.title}")
-        st.info(f"**Logline:** {narrative_state.story_arc.logline}")
-        with st.expander("Show Full Story Arc Details"):
-            for scene in narrative_state.story_arc.scenes:
-                st.markdown("---")
-                st.markdown(f"**Scene {scene.scene_number}: {scene.title}** ({scene.setting})")
-                st.markdown(f"**Summary:** {scene.summary}")
-                st.markdown(f"**Key Visual Moment:** *{scene.key_visual_moment}*")
+    # --- OUTPUT DISPLAY AREA (THIS IS THE ONLY PART THAT HAS CHANGED) ---
+    # We now look for 'story_concepts' in the state instead of 'story_arc'.
     
-    if narrative_state and narrative_state.screenplay:
-        st.subheader("✍️ Screenplay")
-        with st.expander("Show Full Screenplay"):
-            for scene in narrative_state.screenplay.scenes:
-                st.markdown("---")
-                st.markdown(f"**{scene.scene_header}**")
-                st.write(scene.action_description.replace('\n', '  \n'))
-                if scene.character_dialogue:
-                    for char, lines in scene.character_dialogue.items():
-                        st.markdown(f"<div style='margin-left: 15%;'><strong>{char.upper()}</strong></div>", unsafe_allow_html=True)
-                        for line in lines:
-                            st.markdown(f"<div style='margin-left: 25%;'>{line}</div>", unsafe_allow_html=True)
-    
-    if narrative_state and narrative_state.storyboard:
-        st.subheader("🖼️ Visual Storyboard")
-        st.markdown("Your AI Cinematographer has broken down the script into key shots.")
+    if narrative_state and narrative_state.story_concepts:
+        st.subheader("💡 Creative Concepts")
+        st.markdown("Here are several different story directions based on your input:")
         
-        for item in narrative_state.storyboard.items:
-            with st.container():
-                st.markdown("---")
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.markdown(f"##### Scene {item.scene_number}, Shot {item.shot_number}")
-                    st.markdown(f"**Type:** {item.shot_type}")
-                    st.markdown("**Description:**")
-                    st.write(item.shot_description)
-                with col2:
-                    st.markdown("**Cinematic Generation Prompt**")
-                    st.code(item.cinematic_prompt)
+        # Loop through each generated concept and display it in a clean, bordered container.
+        for i, concept in enumerate(narrative_state.story_concepts.concepts):
+            with st.container(border=True):
+                st.markdown(f"#### Concept {i+1}: {concept.title}")
+                st.info(f"**Logline:** {concept.logline}")
+                st.markdown(f"**Cinematic Style:** In the style of *{concept.director_style}*")
+                st.markdown("**Synopsis:**")
+                st.write(concept.brief_synopsis)

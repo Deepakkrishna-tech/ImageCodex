@@ -11,7 +11,7 @@ from src.agents.prompt_engineer import run_prompt_engineer
 from src.agents.inspector import run_inspector
 from src.agents.refiner import run_refiner
 from src.agents.video_director import run_video_director
-from src.agents.film_story_writer import film_story_writer_node
+from src.agents.film_story_writer import story_concept_generator_node
 from src.agents.script_expert import script_expert_node
 from src.agents.storyboard_artist import storyboard_artist_node
 
@@ -79,15 +79,18 @@ def build_visual_workflow_graph():
 # ==============================================================================
 
 def build_narrative_workflow_graph():
-    """Builds the linear LangGraph for the Stage 3 Narrative Engine."""
+    """Builds the graph for Stage 3. For now, it just generates concepts."""
     workflow = StateGraph(Dict[str, Any])
-    workflow.add_node("film_story_writer", film_story_writer_node)
-    workflow.add_node("script_expert", script_expert_node)
-    workflow.add_node("storyboard_artist", storyboard_artist_node)
-    workflow.set_entry_point("film_story_writer")
-    workflow.add_edge("film_story_writer", "script_expert")
-    workflow.add_edge("script_expert", "storyboard_artist")
-    workflow.add_edge("storyboard_artist", END)
+
+    # --- THIS IS THE CHANGE ---
+    # We only need one node for this new feature.
+    workflow.add_node("story_concept_generator", story_concept_generator_node)
+    
+    workflow.set_entry_point("story_concept_generator")
+    
+    # The graph ends right after generating the concepts.
+    workflow.add_edge("story_concept_generator", END)
+
     graph = workflow.compile()
-    print("Narrative Engine Workflow Graph compiled successfully.")
+    print("Narrative Engine Workflow (Concept Generation) compiled successfully.")
     return graph
