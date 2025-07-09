@@ -1,260 +1,275 @@
-🎬 ImageCodeX
+# 🎬 ImageCodeX
 
 ImageCodeX is an advanced agentic, multi-agent-powered visual engineering tool designed to transform static images and text prompts into a complete creative workflow. By combining cutting-edge artificial intelligence with intuitive human-in-the-loop collaboration, ImageCodeX empowers users to craft compelling narratives, dynamic video prompts, and high-quality AI-generated images.
 
-![alt text](https://img.shields.io/badge/Python-3.10+-blue.svg)
-
-
-![alt text](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)
-
-
-![alt text](https://img.shields.io/badge/Agents-LangGraph-E86F2C)
-
-
-![alt text](https://img.shields.io/badge/License-MIT-green.svg)
+![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)
+![Agents](https://img.shields.io/badge/Agents-LangGraph-E86F2C)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 At its core, ImageCodeX leverages a sophisticated multi-stage workflow that guides users through every step of the creative process:
 
-Stage 1 & 2: Visual Prompt Engineering – Analyze static images to generate and refine detailed, model-ready text prompts for both image and cinematic video generation.
-
-Stage 3: Narrative Brainstorming – Expand a visual or text-based idea into multiple high-level story concepts, complete with loglines and director-style pitches.
-
-Stage 4: AI Image Generation – Close the creative loop by generating high-quality images directly from your engineered prompts using a variety of state-of-the-art models.
+-   **Stage 1 & 2: Visual Prompt Engineering** – Analyze static images to generate and refine detailed text prompts for image and video generation.
+-   **Stage 3: Cinematic Narrative Engine** – Transform an image into a cinematic "Before/After" scene with genre control and reference-based inspiration from live web searches.
+-   **Stage 4: AI Image Generation** – Close the creative loop by generating high-quality images directly from your engineered prompts.
 
 With its seamless integration of AI-driven insights and human creativity, ImageCodeX bridges the gap between imagination and execution—making it the ultimate tool for storytellers, content creators, and AI enthusiasts.
 
-✨ Features
+## ✨ Features
 
-Stage 1 & 2: Visual Prompting 🖼️ 🎥
+### Stage 1 & 2: Visual Prompting 🖼️ 🎥
+- Upload an image to receive a detailed, model-ready text-to-image prompt.
+- Automated analysis of artistic elements, style, mood, and composition.
+- Prompt critique and refinement with user feedback.
 
-Upload an image to receive a detailed, model-ready text-to-image prompt.
+### Stage 3: Cinematic Narrative Engine 📖 🎬
+- **Before & After Scenes:** Generates a cinematic "Before Scene" (what just happened) and "After Scene" (what happens next) from a single image and idea.
+- **Genre & Mood Control:** Shape your narrative with specific genres (e.g., *Dark Fantasy*) and moods (e.g., *Somber & Reflective*).
+- **Three Powerful Inspiration Modes:**
+    - `🧠 AI Imagination`: Purely AI-driven creativity.
+    - `🎞️ Inspired By`: Draws thematic and stylistic inspiration from a reference story (e.g., "Narnia," "Avengers").
+    - `📚 Original Story`: Fetches key factual motifs from a reference (e.g., "Mahabharata") to ensure accuracy.
+- **Live Web Search:** Uses the **Tavily API** to gather real-time context for the "Inspired By" and "Original Story" modes.
+- **Dual-Prompt Output:** Generates two distinct, high-quality image prompts, one for the "Before Scene" and one for the "After Scene".
 
-Automated analysis of artistic elements, style, mood, and composition.
+### Stage 4: AI Image Generation 🎨
+- **Multi-Model Support:** Generate images using GPT-4o, Stable Diffusion XL, and Kandinsky 2.2.
+- **Text-to-Image:** Create visuals directly from your crafted prompts.
+- **Image-to-Image & Variations:** Provide an optional reference image to guide generation.
 
-Extend prompts with creative briefs (mood, camera movement) for cinematic video concepts.
+### Developer Tools 🔧
+- **Live State Inspector:** A sidebar for inspecting and clearing the application's real-time state.
+- **Modular Architecture:** Built with LangGraph for easy extension and agent management.
 
-Prompt critique and refinement with user feedback.
+## 🎥 Demo
 
-Stage 3: Narrative Engine 📖
+![Screenshot of ImageCodeX Stage 3 UI](docs/screenshot_stage3.png)
+<!-- TODO: Replace with an updated screenshot showing the new Stage 3 UI with a generated Before/After scene. -->
 
-Brainstorm multiple distinct story concepts from a single image or text idea.
-
-Generate unique titles, loglines, synopses, and director styles for each concept.
-
-Supports genre and mood customization.
-
-Stage 4: AI Image Generation 🎨
-
-Multi-Model Support: Generate images using GPT-4o, Stable Diffusion XL, and Kandinsky 2.2.
-
-Text-to-Image: Create visuals directly from your crafted prompts.
-
-Image-to-Image & Variations: Provide an optional reference image to guide generation or create variations.
-
-Download Functionality: Easily save your generated images with a single click.
-
-Developer Tools 🔧
-
-Dev sidebar for inspecting and clearing the application's real-time state.
-
-Modular, agent-based architecture built with LangGraph for easy extension.
-
-🎥 Demo
-
-![alt text](docs/screenshot.png)
-
-<!-- TODO: Replace with an updated screenshot showing the Stage 4 tab with a generated image. -->
-
-
-![alt text](https://img.youtube.com/vi/your_video_id/0.jpg)
-
+[![YouTube Video Demo](https://img.youtube.com/vi/your_video_id/0.jpg)](https://www.youtube.com/watch?v=your_video_id)
 <!-- TODO: Replace with your actual YouTube video link -->
 
-🚀 Usage
+## 🚀 Usage
 
-Visual Prompting Tab (Stages 1 & 2)
+### Visual Prompting Tab (Stages 1 & 2)
+1.  **Image Prompt:** Upload an image and click "Analyze and Generate Prompt".
+2.  **Video Prompt:** Provide a creative brief and click "Generate Video Prompt".
 
-Image Prompt: Upload an image and click "Analyze and Generate Prompt".
+### Cinematic Narrative Engine Tab (Stage 3)
+1.  Upload an image and provide a short description of the core moment (e.g., "A secret is discovered.").
+2.  Select a **Genre** and **Mood**.
+3.  Choose your **Inspiration Mode** (`AI Imagination`, `Inspired By`, or `Original Story`).
+4.  If using inspiration, provide a **Reference Story** (e.g., "Spiderman").
+5.  Click `🎬 Generate Cinematic Scene` and review the "Before/After" scenes and their corresponding image prompts.
+6.  Click `🔄 Start New Scene` to unlock the UI and begin again.
 
-Video Prompt: Provide a creative brief and click "Generate Video Prompt" using either the first image or a new one.
+### Image Generation Tab (Stage 4) 🎨
+1.  The prompts from Stage 3 can be copied and pasted here.
+2.  Select your desired AI model and aspect ratio.
+3.  Click "Generate Image" and review the result.
 
-Narrative Engine Tab (Stage 3)
+## 💻 Tech Stack
 
-Provide an image, text idea, genre, and mood.
+-   **Python 3.10+** 🐍
+-   **Streamlit** – Interactive web UI 🌟
+-   **Pydantic** – Data validation and modeling 📊
+-   **LangChain / LangGraph** – Agentic workflow orchestration 🤖
+-   **OpenAI & Replicate APIs** – Powering LLM and image generation agents 🧠
+-   **Tavily API** – For live web search to provide reference context 🌐
+-   **Poetry** – Dependency management 📦
+-   **dotenv** – Environment variable management 🔑
 
-Click "Brainstorm Concepts" to receive multiple story ideas.
+## 🤖 Agentic Workflow & Agent Roles
 
-Image Generation Tab (Stage 4) 🎨
+The core of ImageCodeX is a multi-agent workflow orchestrated by LangGraph. The new Stage 3 workflow is highly conditional and context-aware.
 
-The prompt from Stage 1 is pre-filled, or you can write a new one.
+### Stage 3: Cinematic Narrative Agents
 
-Select your desired AI model (e.g., GPT-4o) and aspect ratio.
+| Agent Name | Role in Workflow |
+| :--- | :--- |
+| `reference_agent` | **(Live)** Uses Tavily Search to fetch factual motifs and plot points for the "Original Story" mode. |
+| `inspiration_agent` | **(Live)** Uses Tavily Search to find thematic and stylistic inspiration for the "Inspired By" mode. |
+| `context_engineer` | Fuses the user's idea, genre, mood, and any gathered inspiration into a coherent creative brief. |
+| `storytelling_agent` | The "Master Storyteller." Uses GPT-4o to synthesize the full context into the final "Before/After" scenes and image prompts. |
 
-(Optional) Tick "Use Reference Image" and upload an image for img2img/variation.
+### How the Cinematic Workflow Works
 
-Click "Generate Image" and review the result.
+The Stage 3 graph is orchestrated by an `inspiration_router` that directs the flow based on the user's selected mode:
+1.  **If "Original Story":** The flow starts with the `reference_agent` to gather facts.
+2.  **If "Inspired By":** The flow starts with the `inspiration_agent` to gather themes.
+3.  **If "AI Imagination":** The flow skips the search agents and goes directly to the next step.
 
-Click "Download Image" to save your creation.
+All paths converge on the `context_engineer`, which prepares the final brief for the `storytelling_agent` to generate the output.
 
-💻 Tech Stack
+## 🛠️ Installation
 
-Python 3.10+ 🐍
+**Requirements:**
+-   Python 3.10+ 🐍
+-   Poetry 📦
+-   Git 🌿
 
-Streamlit – Interactive web UI 🌟
-
-Pydantic – Data validation and modeling 📊
-
-LangChain / LangGraph – Agentic workflow orchestration 🤖
-
-OpenAI & Replicate APIs – Powering LLM and image generation agents 🧠
-
-Pillow – Image processing 🖼️
-
-Requests - HTTP requests for downloading generated images
-
-Poetry – Dependency management 📦
-
-dotenv – Environment variable management 🔑
-
-🤖 Agentic Workflow & Agent Roles
-
-The core of ImageCodeX is a multi-agent workflow orchestrated by LangGraph. Each agent is an expert in a specific creative or analytical task:
-
-Agent Name	Role in Workflow
-visual_analyst	Analyzes uploaded images for subject, style, mood, and composition.
-prompt_engineer	Generates detailed text-to-image prompts based on the visual analysis.
-inspector	Critiques the generated prompt for accuracy, clarity, and creative fit.
-refiner	Refines prompts based on user feedback and inspector critique.
-video_director	Converts image prompts and creative briefs into cinematic video prompts.
-film_story_writer	Brainstorms multiple high-level story concepts from visual and textual input.
-image_generator	Generates images using various models (GPT-4o, SDXL) via text-to-image or image-to-image.
-script_expert	(Future) Expands story concepts into screenplay-style scenes and dialogue.
-storyboard_artist	(Future) Generates visual storyboard descriptions for each scene.
-🔄 How the Agentic Workflow Works
-
-Visual Prompting (Stages 1 & 2)
-
-visual_analyst analyzes the uploaded image.
-
-prompt_engineer creates a text prompt.
-
-inspector critiques the prompt.
-
-refiner improves the prompt if user feedback is provided.
-
-video_director uses the prompt and a creative brief to generate a video concept.
-
-Narrative Engine (Stage 3)
-
-film_story_writer builds multiple story concepts from the visual and user input.
-
-Image Generation (Stage 4)
-
-image_generator uses the final prompt (and optional reference image) to call the selected AI model (OpenAI or Replicate).
-
-All agent steps are orchestrated as independent graphs (see src/graph/graphs.py), allowing for flexible, modular, and extensible workflows.
-
-📂 File Structure
-Generated code
-ImageCodeX/
-│
-├── .env                  # API keys and environment variables 🔑
-├── pyproject.toml        # Poetry project config 📦
-├── run_app.py            # Main application entry point ▶️
-│
-└── src/
-    │
-    ├── app.py            # Main Streamlit app and controller 🌟
-    │
-    ├── agents/
-    │   ├── film_story_writer.py
-    │   ├── image_generator.py      # <-- ADDED
-    │   ├── inspector.py
-    │   ├── prompt_engineer.py
-    │   ├── refiner.py
-    │   ├── script_expert.py
-    │   ├── storyboard_artist.py
-    │   ├── video_director.py
-    │   └── visual_analyst.py
-    │
-    ├── core/
-    │   ├── prompts.py    # Prompt templates for agents 📝
-    │   └── schemas.py    # Pydantic models for app state and data 📊
-    │
-    ├── graph/
-    │   └── graphs.py     # Workflow graphs connecting agents 🔄
-    │
-    └── ui/
-        ├── stage3_ui.py            # UI for narrative engine 📖
-        ├── stage4_ui.py            # UI for image generation 🎨  <-- ADDED
-        └── visual_prompting_ui.py  # UI for image/video prompt stages 🖼️🎥
-
-🛠️ Installation
-
-Requirements:
-
-Python 3.10+ 🐍
-
-Poetry 📦
-
-Git 🌿
-
-1. Clone the repository:
-
-Generated sh
+**1. Clone the repository:**
+```sh
 git clone https://github.com/Deepakkrishna-tech/ImageCodeX.git
 cd ImageCodeX
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Sh
-IGNORE_WHEN_COPYING_END
 
 2. Create the Environment File:
-Create a file named .env in the root of the project directory and add your API keys:
+Create a file named .env in the root of the project directory and add your API keys. The TAVILY_API_KEY is now required for Stage 3.
 
-Generated env
+Of course. Creating a comprehensive and updated `README.md` is a critical final step to reflect all the amazing work you've done. I will generate a new README inspired by your previous version, but with all the new features, agents, and technical requirements fully documented.
+
+This updated README will explain the new Stage 3 Cinematic Narrative Engine, the inspiration modes, the new agents, the updated tech stack, and the revised installation instructions.
+
+Here is the complete, updated `README.md` file. You can copy the entire content from the code block below and paste it directly into your `README.md` file.
+
+```markdown
+# 🎬 ImageCodeX
+
+ImageCodeX is an advanced agentic, multi-agent-powered visual engineering tool designed to transform static images and text prompts into a complete creative workflow. By combining cutting-edge artificial intelligence with intuitive human-in-the-loop collaboration, ImageCodeX empowers users to craft compelling narratives, dynamic video prompts, and high-quality AI-generated images.
+
+![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)
+![Agents](https://img.shields.io/badge/Agents-LangGraph-E86F2C)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+
+At its core, ImageCodeX leverages a sophisticated multi-stage workflow that guides users through every step of the creative process:
+
+-   **Stage 1 & 2: Visual Prompt Engineering** – Analyze static images to generate and refine detailed text prompts for image and video generation.
+-   **Stage 3: Cinematic Narrative Engine** – Transform an image into a cinematic "Before/After" scene with genre control and reference-based inspiration from live web searches.
+-   **Stage 4: AI Image Generation** – Close the creative loop by generating high-quality images directly from your engineered prompts.
+
+With its seamless integration of AI-driven insights and human creativity, ImageCodeX bridges the gap between imagination and execution—making it the ultimate tool for storytellers, content creators, and AI enthusiasts.
+
+## ✨ Features
+
+### Stage 1 & 2: Visual Prompting 🖼️ 🎥
+- Upload an image to receive a detailed, model-ready text-to-image prompt.
+- Automated analysis of artistic elements, style, mood, and composition.
+- Prompt critique and refinement with user feedback.
+
+### Stage 3: Cinematic Narrative Engine 📖 🎬
+- **Before & After Scenes:** Generates a cinematic "Before Scene" (what just happened) and "After Scene" (what happens next) from a single image and idea.
+- **Genre & Mood Control:** Shape your narrative with specific genres (e.g., *Dark Fantasy*) and moods (e.g., *Somber & Reflective*).
+- **Three Powerful Inspiration Modes:**
+    - `🧠 AI Imagination`: Purely AI-driven creativity.
+    - `🎞️ Inspired By`: Draws thematic and stylistic inspiration from a reference story (e.g., "Narnia," "Avengers").
+    - `📚 Original Story`: Fetches key factual motifs from a reference (e.g., "Mahabharata") to ensure accuracy.
+- **Live Web Search:** Uses the **Tavily API** to gather real-time context for the "Inspired By" and "Original Story" modes.
+- **Dual-Prompt Output:** Generates two distinct, high-quality image prompts, one for the "Before Scene" and one for the "After Scene".
+
+### Stage 4: AI Image Generation 🎨
+- **Multi-Model Support:** Generate images using GPT-4o, Stable Diffusion XL, and Kandinsky 2.2.
+- **Text-to-Image:** Create visuals directly from your crafted prompts.
+- **Image-to-Image & Variations:** Provide an optional reference image to guide generation.
+
+### Developer Tools 🔧
+- **Live State Inspector:** A sidebar for inspecting and clearing the application's real-time state.
+- **Modular Architecture:** Built with LangGraph for easy extension and agent management.
+
+## 🎥 Demo
+
+![Screenshot of ImageCodeX Stage 3 UI](docs/screenshot_stage3.png)
+<!-- TODO: Replace with an updated screenshot showing the new Stage 3 UI with a generated Before/After scene. -->
+
+[![YouTube Video Demo](https://img.youtube.com/vi/your_video_id/0.jpg)](https://www.youtube.com/watch?v=your_video_id)
+<!-- TODO: Replace with your actual YouTube video link -->
+
+## 🚀 Usage
+
+### Visual Prompting Tab (Stages 1 & 2)
+1.  **Image Prompt:** Upload an image and click "Analyze and Generate Prompt".
+2.  **Video Prompt:** Provide a creative brief and click "Generate Video Prompt".
+
+### Cinematic Narrative Engine Tab (Stage 3)
+1.  Upload an image and provide a short description of the core moment (e.g., "A secret is discovered.").
+2.  Select a **Genre** and **Mood**.
+3.  Choose your **Inspiration Mode** (`AI Imagination`, `Inspired By`, or `Original Story`).
+4.  If using inspiration, provide a **Reference Story** (e.g., "Spiderman").
+5.  Click `🎬 Generate Cinematic Scene` and review the "Before/After" scenes and their corresponding image prompts.
+6.  Click `🔄 Start New Scene` to unlock the UI and begin again.
+
+### Image Generation Tab (Stage 4) 🎨
+1.  The prompts from Stage 3 can be copied and pasted here.
+2.  Select your desired AI model and aspect ratio.
+3.  Click "Generate Image" and review the result.
+
+## 💻 Tech Stack
+
+-   **Python 3.10+** 🐍
+-   **Streamlit** – Interactive web UI 🌟
+-   **Pydantic** – Data validation and modeling 📊
+-   **LangChain / LangGraph** – Agentic workflow orchestration 🤖
+-   **OpenAI & Replicate APIs** – Powering LLM and image generation agents 🧠
+-   **Tavily API** – For live web search to provide reference context 🌐
+-   **Poetry** – Dependency management 📦
+-   **dotenv** – Environment variable management 🔑
+
+## 🤖 Agentic Workflow & Agent Roles
+
+The core of ImageCodeX is a multi-agent workflow orchestrated by LangGraph. The new Stage 3 workflow is highly conditional and context-aware.
+
+### Stage 3: Cinematic Narrative Agents
+
+| Agent Name | Role in Workflow |
+| :--- | :--- |
+| `reference_agent` | **(Live)** Uses Tavily Search to fetch factual motifs and plot points for the "Original Story" mode. |
+| `inspiration_agent` | **(Live)** Uses Tavily Search to find thematic and stylistic inspiration for the "Inspired By" mode. |
+| `context_engineer` | Fuses the user's idea, genre, mood, and any gathered inspiration into a coherent creative brief. |
+| `storytelling_agent` | The "Master Storyteller." Uses GPT-4o to synthesize the full context into the final "Before/After" scenes and image prompts. |
+
+### How the Cinematic Workflow Works
+
+The Stage 3 graph is orchestrated by an `inspiration_router` that directs the flow based on the user's selected mode:
+1.  **If "Original Story":** The flow starts with the `reference_agent` to gather facts.
+2.  **If "Inspired By":** The flow starts with the `inspiration_agent` to gather themes.
+3.  **If "AI Imagination":** The flow skips the search agents and goes directly to the next step.
+
+All paths converge on the `context_engineer`, which prepares the final brief for the `storytelling_agent` to generate the output.
+
+## 🛠️ Installation
+
+**Requirements:**
+-   Python 3.10+ 🐍
+-   Poetry 📦
+-   Git 🌿
+
+**1. Clone the repository:**
+```sh
+git clone https://github.com/Deepakkrishna-tech/ImageCodeX.git
+cd ImageCodeX
+```
+
+**2. Create the Environment File:**
+Create a file named `.env` in the root of the project directory and add your API keys. The `TAVILY_API_KEY` is now required for Stage 3.
+```env
+# For OpenAI models like GPT-4o
 OPENAI_API_KEY="sk-..."
+
+# For Replicate models (e.g., SDXL)
 REPLICATE_API_TOKEN="r8_..."
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Env
-IGNORE_WHEN_COPYING_END
 
-3. Install Dependencies:
-This command will create a virtual environment and install all necessary packages.
+# For the Tavily web search tool (used in Stage 3)
+TAVILY_API_KEY="tvly-..."
+```
 
-Generated sh
+**3. Install Dependencies:**
+This command will create a virtual environment and install all necessary packages, including the new `langchain-tavily` library.
+```sh
 poetry install
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Sh
-IGNORE_WHEN_COPYING_END
+```
 
-4. Run the App:
-Use the unified run_app.py script. This works on Windows, macOS, and Linux.
-
-Generated sh
+**4. Run the App:**
+Use the unified `run_app.py` script. This works on Windows, macOS, and Linux.
+```sh
 poetry run streamlit run run_app.py
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Sh
-IGNORE_WHEN_COPYING_END
-🌱 Extending & Contributing
+```
 
-Fork and clone the repo.
+## 🌱 Extending & Contributing
 
-Add new agents or UI stages as needed.
+-   Fork and clone the repo.
+-   Add new agents or UI stages as needed.
+-   Submit pull requests for improvements or bug fixes.
 
-Submit pull requests for improvements or bug fixes.
+## 📜 License
 
-📜 License
-
-MIT License. See LICENSE for details. 📄
+MIT License. See `LICENSE` for details. 📄
