@@ -1,8 +1,7 @@
 # src/core/schemas.py
 """
-This file contains the final, unified Pydantic schemas for the ImageCodeX application,
-defining the data structures for all stages and the master application state.
-This version restores all original schemas and integrates Stage 4 components.
+This file contains the final, unified Pydantic schemas for the ImageCodeX application.
+This version restores all original schemas and integrates the new Stage 3 and Stage 4 components.
 """
 
 from pydantic import BaseModel, Field
@@ -37,9 +36,10 @@ class PromptCritique(BaseModel):
     suggested_improvement: str
 
 # ==============================================================================
-# == STAGE 3 SCHEMAS (Narrative Engine)
+# == STAGE 3 SCHEMAS (Narrative Engine) - FULLY RESTORED AND UPDATED
 # ==============================================================================
 
+# --- Legacy V2 Schemas (Restored for compatibility) ---
 class StoryConcept(BaseModel):
     title: str
     logline: str
@@ -54,11 +54,11 @@ class ScreenplayScene(BaseModel):
     action_description: str
     character_dialogue: Optional[Dict[str, List[str]]] = None
 
-class Screenplay(BaseModel):
+class Screenplay(BaseModel): # RESTORED
     title: str
     scenes: List[ScreenplayScene]
 
-class StoryArc(BaseModel):
+class StoryArc(BaseModel): # RESTORED
     title: str
     premise: str
     protagonist: str
@@ -75,22 +75,33 @@ class StoryboardItem(BaseModel):
     shot_description: str
     cinematic_prompt: str
 
-class Storyboard(BaseModel):
+class Storyboard(BaseModel): # RESTORED
     items: List[StoryboardItem]
+    
+# --- V3 Cinematic Narrative Engine Schemas (New) ---
+class CinematicNarrativeOutput(BaseModel):
+    before_scene_cinematic: str = Field(description="The cinematic scene describing what happened just before the image.")
+    after_scene_cinematic: str = Field(description="The cinematic scene describing what happens next.")
+    before_scene_prompt: str = Field(description="A refined, high-quality prompt for generating the 'Before' scene image.")
+    after_scene_prompt: str = Field(description="A refined, high-quality prompt for generating the 'After' scene image.")
+    source_of_inspiration: str = Field(description="Records the inspiration mode used (e.g., AI, Inspired by 'Spiderman').")
 
 # ==============================================================================
 # == STAGE 4 SCHEMAS (Image Generation)
 # ==============================================================================
 
 class ImageGenerationParams(BaseModel):
-    """Parameters for the image generation request."""
     model: Literal["gpt-4o", "sdxl", "kandinsky-2.2"] = Field("gpt-4o")
     prompt: str
     negative_prompt: Optional[str] = None
     aspect_ratio: Literal["1:1", "16:9", "9:16"] = Field("1:1")
+    reference_image: Optional[bytes] = Field(
+        None, 
+        description="Optional reference image for img2img or variation generation.",
+        exclude=True
+    )
 
 class GeneratedImage(BaseModel):
-    """Represents a single generated image and its metadata."""
     image_url: str
     model_used: str
     prompt_used: str
@@ -101,14 +112,26 @@ class GeneratedImage(BaseModel):
 # ==============================================================================
 
 class NarrativeState(BaseModel):
-    # Inputs
-    input_image_bytes: Optional[bytes] = None
+    # --- V3 Cinematic Engine Inputs ---
+    input_image_bytes: Optional[bytes] = Field(None, exclude=True)
     initial_idea: Optional[str] = None
     genre: str = "Filmmaker's Choice"
     mood: str = "Filmmaker's Choice"
-    # Brainstorming Output
+    inspiration_mode: Literal["🧠 AI Imagination", "🎞️ Inspired By", "📚 Original Story"] = "🧠 AI Imagination"
+    story_reference: Optional[str] = None
+
+    # --- V3 Cinematic Engine Outputs ---
+    cinematic_output: Optional[CinematicNarrativeOutput] = None
+
+    # --- V3 Internal Agent State (for dev view) ---
+    context_summary: Optional[str] = None
+    inspiration_phrases: Optional[List[str]] = None
+    
+    # --- V3 UI State ---
+    is_locked: bool = False
+    
+    # --- V2 Legacy Outputs (kept for compatibility) ---
     story_concepts: Optional[StoryConceptCollection] = None
-    # Future Development Outputs
     screenplay: Optional[Screenplay] = None
     storyboard: Optional[Storyboard] = None
     story_arc: Optional[StoryArc] = None
@@ -129,11 +152,11 @@ class AppState(BaseModel):
     # STAGE 3 STATE
     narrative_state: NarrativeState = Field(default_factory=NarrativeState)
     
-    # STAGE 4 STATE - INTEGRATED
+    # STAGE 4 STATE
     image_gen_params: Optional[ImageGenerationParams] = None
     generated_images: List[GeneratedImage] = Field(default_factory=list)
 
-    # UTILITY STATE - INTEGRATED
+    # UTILITY STATE
     error_message: Optional[str] = None
 
     class Config:
