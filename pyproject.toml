@@ -1,24 +1,25 @@
-[project]
+# pyproject.toml
+
+[tool.poetry]
 name = "visionprompt-agent"
 version = "0.1.0"
-description = "an agentic visual prompt engineer"
-authors = [
-    {name = "deepak",email = "deepak201298.s@gmail.com"}
-]
+description = "An creative agentic visual prompt engineering engine"
+authors = ["deepak <deepak201298.s@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.13, <4.0"
-dependencies = [
-    "streamlit (>=1.46.1,<2.0.0)",
-    "langgraph (>=0.5.1,<0.6.0)",
-    "langchain (>=0.3.26,<0.4.0)",
-    "langchain-openai (>=0.3.27,<0.4.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)",
-    "pillow (>=11.3.0,<12.0.0)",
-    "langchain-core (>=0.3.68,<0.4.0)",
-    "pydantic (>=2.11.7,<3.0.0)"
-]
+packages = [{include = "src"}]
 
+[tool.poetry.dependencies]
+python = ">=3.10, <4.0" # Changed from 3.13 to 3.10 for wider compatibility
+streamlit = ">=1.34.0" # Loosened version for stability
+langgraph = ">=0.0.48"
+langchain = ">=0.1.0"
+langchain-openai = ">=0.1.0"
+python-dotenv = ">=1.0.0"
+pillow = ">=10.0.0"
+langchain-core = ">=0.1.52"
+pydantic = ">=2.7.0"
+replicate = "^0.29.0" # <-- This is the new, correctly formatted dependency
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

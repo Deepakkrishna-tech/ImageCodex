@@ -3,7 +3,8 @@
 
 import streamlit as st
 
-def render_narrative_engine(controller):
+# The function name is changed to match the new convention used in app.py
+def show_stage3_ui(controller):
     """
     Renders the UI for Stage 3. The output section has been updated to display
     a list of brainstormed story concepts instead of a single story arc.
@@ -45,7 +46,8 @@ def render_narrative_engine(controller):
                     genre=genre,
                     mood=mood
                 )
-                st.rerun()
+                # The controller now handles the rerun, so we can remove it here.
+                # st.rerun()
 
     # --- OUTPUT DISPLAY AREA (THIS IS THE ONLY PART THAT HAS CHANGED) ---
     # We now look for 'story_concepts' in the state instead of 'story_arc'.

@@ -1,16 +1,24 @@
 # run_app.py
-# This is the single, correct entry point for your application.
+"""
+The main entry point for the ImageCodeX application.
 
-import sys
-from pathlib import Path
+This script ensures that environment variables are loaded from the .env file
+at the very beginning, before any other application code is imported. This
+prevents API key errors during the import process.
+"""
 
-# This permanently solves all import errors by telling Python where your project lives.
-ROOT_DIR = Path(__file__).parent
-sys.path.append(str(ROOT_DIR))
+import os
+from dotenv import load_dotenv
 
-# Now, we can safely import the main function from your src package.
+# --- CRITICAL: Load environment variables FIRST ---
+# This must happen before any imports from the 'src' directory.
+load_dotenv()
+
+# Now it is safe to import the main application function
 from src.app import main
 
 if __name__ == "__main__":
-    # This calls the main function inside src/app.py to start the application.
+    # Set the PYTHONPATH for Streamlit if it's not already set
+    # This ensures that relative imports within the 'src' directory work correctly.
+    os.environ['PYTHONPATH'] = '.'
     main()
