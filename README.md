@@ -39,32 +39,6 @@
 
 ---
 
-## Installation
-
-**Requirements:**
-- Python 3.13+
-- [Poetry](https://python-poetry.org/)
-- Git
-
-**Clone and install dependencies:**
-```sh
-git clone https://github.com/Deepakkrishna-tech/ImageCodex.git
-cd ImageCodex
-poetry install
-```
-
-**Run the app:**
-```sh
-# On Windows (PowerShell)
-$env:PYTHONPATH = "."
-poetry run streamlit run src/app.py
-
-# On Linux/macOS
-PYTHONPATH=. poetry run streamlit run src/app.py
-```
-
----
-
 ## Usage
 
 1. **Stage 1: Image Prompt**
@@ -82,10 +56,6 @@ PYTHONPATH=. poetry run streamlit run src/app.py
 3. **Stage 3: Narrative Engine**
    - Provide an image, idea, genre, and mood.
    - Generate a story arc and screenplay scenes.
-
----
-
-Here’s an improved README section covering the **tech stack**, a **clear file structure with explanations**, and a **detailed agentic workflow** with each agent’s role.
 
 ---
 
@@ -180,11 +150,6 @@ All agent steps are orchestrated as a **graph** (see graphs.py), allowing for fl
 
 ---
 
-You can copy this section into your README under **Tech Stack**, **File Structure**, and **Agentic Workflow**.  
-Let me know if you want a diagram or further breakdown!
-
----
-
 ## Key Code Concepts
 
 - **AppController**: Manages app state, workflow execution, and reruns.
@@ -192,6 +157,33 @@ Let me know if you want a diagram or further breakdown!
 - **UI**: Streamlit-based, modular per stage.
 - **Workflows**: Each stage is a graph of agentic steps (see `graph/graphs.py`).
 
+---
+
+---
+
+## Installation
+
+**Requirements:**
+- Python 3.13+
+- [Poetry](https://python-poetry.org/)
+- Git
+
+**Clone and install dependencies:**
+```sh
+git clone https://github.com/Deepakkrishna-tech/ImageCodex.git
+cd ImageCodex
+poetry install
+```
+
+**Run the app:**
+```sh
+# On Windows (PowerShell)
+$env:PYTHONPATH = "."
+poetry run streamlit run src/app.py
+
+# On Linux/macOS
+PYTHONPATH=. poetry run streamlit run src/app.py
+```
 ---
 
 ## Extending & Contributing
