@@ -1,11 +1,18 @@
 # 🎬 **ImageCodeX**
 
-**ImageCodeX** is an agentic visual prompt engineer that transforms static images into cinematic stories using AI. It provides a multi-stage workflow for generating image prompts, cinematic video prompts, and narrative story arcs—all through a modern Streamlit UI.
+ImageCodeX is an advanced agentic, multi-agent-powered visual prompt engineering tool designed to transform static images into cinematic stories through the power of AI and human-in-the-loop collaboration. By combining cutting-edge artificial intelligence with intuitive creative workflows, ImageCodeX empowers users to craft compelling narratives, dynamic video prompts, and immersive story arcs—all tailored for creative storytelling.  
 
 [![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)  
 [![Framework](https://img.shields.io/badge/Framework-Streamlit-FF4B4B)](https://streamlit.io)  
 [![Agent Orchestration](https://img.shields.io/badge/Agents-LangGraph-E86F2C)](https://langchain.com)  
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)  
+
+At its core, ImageCodeX leverages a sophisticated **multi-stage workflow** that guides users through every step of the creative process:  
+- **Stage 1: Image Prompt Generation** – Analyze static images to generate detailed, model-ready text prompts enriched with artistic elements, style, mood, and composition insights.  
+- **Stage 2: Cinematic Video Prompts** – Extend your visuals into dynamic video concepts by incorporating creative briefs such as mood, camera movements, and scene notes.  
+- **Stage 3: Narrative Story Arcs** – Develop structured storylines and screenplay-style scenes, enabling you to bring your ideas to life with genre customization and professional polish.  
+
+With its seamless integration of AI-driven insights and human creativity, ImageCodeX bridges the gap between imagination and execution—making it the ultimate tool for storytellers, content creators, and data scientists alike. Whether you're crafting a single scene or an entire cinematic experience, ImageCodeX provides the tools you need to turn your vision into reality.
 
 ---
 
@@ -114,8 +121,8 @@ All agent steps are orchestrated as a **graph** (see `graphs.py`), allowing for 
 - **AppController**: Manages app state, workflow execution, and reruns.  
 - **Schemas**: All data (prompts, critiques, briefs, narrative) are Pydantic models.  
 - **UI**: Streamlit-based, modular per stage.  
-- **Workflows**: Each stage is a graph of agentic steps (see `graph/graphs.py`).  
-
+- **Workflows**: Each stage is a graph of agentic steps (see `graph/graphs.py`).
+  
 ---
 
 ## 📂 File Structure
